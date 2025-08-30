@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr. B Grammar Challenge Year 4 - Version 2</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a4580 0%, #3a76d8 100%);
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #4a86e8;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: #555;
+            margin-top: 0;
+        }
+
+        .intro-text, .quiz-section {
+            text-align: center;
+        }
+
+        .btn {
+            background-color: #4a86e8;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-top: 15px;
+        }
+
+        .btn:hover {
+            background-color: #3567b4;
+            transform: translateY(-2px);
+        }
+
+        .quiz-box {
+            background: #f4f7f9;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .question-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .topic-instruction {
+            background: #eef5ff;
+            color: #1a4580;
+            padding: 10px;
+            border-left: 5px solid #4a86e8;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .underline {
+            text-decoration: underline;
+            font-weight: bold;
+            color: #4a86e8;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        #answer {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        #answer:focus {
+            outline: none;
+            border-color: #4a86e8;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+            word-wrap: break-word; /* To prevent overflow */
+        }
+        
+        /* New feedback styles */
+        .correct {
+            background-color: #e8f9f0;
+            color: #2ecc71;
+            border: 1px solid #2ecc71;
+        }
+
+        .incorrect {
+            background-color: #fcebeb;
+            color: #e74c3c;
+            border: 1px solid #e74c3c;
+        }
+
+        .warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        .results-section {
+            text-align: center;
+        }
+
+        .final-score {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #4a86e8;
+            margin-bottom: 10px;
+        }
+
+        .score-meta {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .encouragement {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0f8ff;
+            border-radius: 10px;
+            border: 1px solid #d0e7ff;
+        }
+
+        .improvement-areas {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: left;
+        }
+        .topic {
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .topic-name {
+            font-weight: bold;
+        }
+        .topic-accuracy {
+            font-size: 0.9em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Introduction Screen -->
+        <div id="intro-screen">
+            <header>
+                <h1><i class="fas fa-spell-check"></i> Grammar Challenge</h1>
+                <h2>Test your skills!</h2>
+            </header>
+            <div class="intro-text">
+                <p>Welcome to Mr. B's Grammar Challenge!</p>
+                <p>This challenge is designed to test your knowledge of key grammar rules. You'll be presented with a sentence that has a mistake. Your task is to rewrite the entire sentence correctly in the box provided.</p>
+                <p>Good luck!</p>
+                <button id="start-btn" class="btn">Begin Challenge</button>
+            </div>
+        </div>
+
+        <!-- Quiz Container -->
+        <div id="quiz-container" style="display: none;">
+            <header>
+                <h1>Question <span id="current-question">1</span> of <span id="total-questions">30</span></h1>
+                <div class="question-meta">
+                    <span class="score-display">Score: <span id="score">0</span></span>
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+            </header>
+            <div class="quiz-box">
+                <div class="topic-instruction" id="topic-instruction"></div>
+                <div class="question-text" id="sentence"></div>
+                <div class="input-group">
+                    <label for="answer">Your Corrected Sentence:</label>
+                    <input type="text" id="answer" placeholder="Rewrite the entire sentence correctly...">
+                </div>
+                <div class="feedback" id="feedback"></div>
+                <button id="submit-btn" class="btn">Submit</button>
+                <button id="next-btn" class="btn" style="display: none;">Next Question <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results" class="results-section" style="display: none;">
+            <header>
+                <h1>Challenge Complete!</h1>
+                <h2>Your Results</h2>
+            </header>
+            <div class="final-score" id="final-score">0</div>
+            <div class="score-meta">questions correct out of <span id="total-questions-result">30</span></div>
+            <div id="encouragement" class="encouragement"></div>
+            <div class="improvement-areas">
+                <h3>Areas for Improvement:</h3>
+                <p id="suggestion-text"></p>
+                <div id="improvement-areas"></div>
+            </div>
+            <button id="restart-btn" class="btn"><i class="fas fa-redo"></i> Try Again</button>
+        </div>
+    </div>
+
+    <script>
+        // Teacher debug mode (set to true to see detailed checking info)
+        let DEBUG_MODE = false;
+
+        function normalizeAnswer(text) {
+            if (!text) return "";
+            // Remove HTML tags (like <span>)
+            text = text.replace(/<[^>]*>/g, "");
+            // Normalize curly quotes/apostrophes to straight ones
+            text = text.replace(/[“”]/g, '"').replace(/[‘’]/g, "'");
+            // Trim and collapse spaces
+            text = text.trim().replace(/\s+/g, " ");
+            return text;
+        }
+
+        function levenshtein(a, b) {
+            const matrix = Array.from({length: a.length + 1}, () => Array(b.length + 1).fill(0));
+            for (let i = 0; i <= a.length; i++) matrix[i][0] = i;
+            for (let j = 0; j <= b.length; j++) matrix[0][j] = j;
+            for (let i = 1; i <= a.length; i++) {
+                for (let j = 1; j <= b.length; j++) {
+                    if (a[i - 1] === b[j - 1]) matrix[i][j] = matrix[i - 1][j - 1];
+                    else matrix[i][j] = Math.min(
+                        matrix[i - 1][j] + 1,
+                        matrix[i][j - 1] + 1,
+                        matrix[i - 1][j - 1] + 1
+                    );
+                }
+            }
+            return matrix[a.length][b.length];
+        }
+
+        // Grammar questions data with topic instructions
+        const grammarQuestions = [
+            {
+                topic: "Subject-Verb Agreement",
+                instruction: "Make sure the verb matches the subject in number (singular or plural).",
+                sentence: "The books <span class='underline'>is</span> on the table.",
+                corrected: "The books are on the table.",
+                explanation: "Use plural verb 'are' with plural subject 'books'."
+            },
+            {
+                topic: "Pronouns",
+                instruction: "Use subject pronouns (I, he, she, they) when the pronoun is the subject of the sentence.",
+                sentence: "<span class='underline'>Him and me</span> went to the store.",
+                corrected: "He and I went to the store.",
+                explanation: "Use subject pronouns (he, I) when they are the subject of the sentence."
+            },
+            {
+                topic: "Verb Tenses",
+                instruction: "Use consistent verb tenses throughout your writing.",
+                sentence: "Yesterday, I <span class='underline'>go</span> to school and learned many things.",
+                corrected: "Yesterday, I went to school and learned many things.",
+                explanation: "Use consistent past tense for actions that happened in the past."
+            },
+            {
+                topic: "Apostrophes for Possession",
+                instruction: "Use apostrophes to show possession (belonging to someone or something).",
+                sentence: "The <span class='underline'>dogs tail</span> was wagging happily.",
+                corrected: "The dog's tail was wagging happily.",
+                explanation: "Use an apostrophe + s to show possession for singular nouns."
+            },
+            {
+                topic: "Apostrophes for Contractions",
+                instruction: "Use apostrophes to show where letters have been omitted in contractions.",
+                sentence: "<span class='underline'>You are</span> going to love this movie.",
+                corrected: "You're going to love this movie.",
+                explanation: "Use an apostrophe to form contractions like 'you're' for 'you are'."
+            },
+            {
+                topic: "Adverbs of Manner",
+                instruction: "Focus on adverbs that describe how an action is performed (usually ending in -ly).",
+                sentence: "She sings <span class='underline'>beautiful</span>.",
+                corrected: "She sings beautifully.",
+                explanation: "Use the adverb 'beautifully' to describe how she sings."
+            },
+            {
+                topic: "Adverbs of Frequency",
+                instruction: "Focus on adverbs that describe how often something happens (always, often, sometimes, never).",
+                sentence: "I <span class='underline'>once a week</span> go to the library.",
+                corrected: "I often go to the library.",
+                explanation: "Use adverbs of frequency to describe how often an action occurs."
+            },
+            {
+                topic: "Adverbs of Place",
+                instruction: "Focus on adverbs that describe where an action happens (here, there, everywhere, outside).",
+                sentence: "The children were playing <span class='underline'>in the backyard</span>.",
+                corrected: "The children were playing outside.",
+                explanation: "Use adverbs of place to indicate where an action occurs."
+            },
+            {
+                topic: "Adverbs of Time",
+                instruction: "Focus on adverbs that describe when an action happens (now, then, yesterday, soon, later).",
+                sentence: "We will go to the park <span class='underline'>in the afternoon</span>.",
+                corrected: "We will go to the park later.",
+                explanation: "Use adverbs of time to indicate when an action occurs."
+            },
+            {
+                topic: "Question Marks",
+                instruction: "Remember to use question marks at the end of direct questions.",
+                sentence: "Do you know what time it is<span class='underline'>.</span>",
+                corrected: "Do you know what time it is?",
+                explanation: "Use a question mark at the end of a direct question."
+            },
+            {
+                topic: "Direct Speech",
+                instruction: "Use quotation marks to indicate direct speech and commas to separate speech from the speaker.",
+                sentence: "She said <span class='underline'>I love reading books</span>.",
+                corrected: 'She said, "I love reading books."',
+                explanation: "Use quotation marks for direct speech and a comma to separate the speaker from the speech."
+            },
+            {
+                topic: "Commas in Lists",
+                instruction: "Use commas to separate three or more items in a list.",
+                sentence: "I need to buy apples <span class='underline'>bananas oranges</span> and grapes.",
+                corrected: "I need to buy apples, bananas, oranges, and grapes.",
+                explanation: "Use commas to separate items in a list."
+            },
+            {
+                topic: "Commas after Introductory Phrases",
+                instruction: "Use commas after introductory words or phrases at the beginning of sentences.",
+                sentence: "<span class='underline'>After school</span> we will play soccer.",
+                corrected: "After school, we will play soccer.",
+                explanation: "Use a comma after introductory words or phrases."
+            },
+            {
+                topic: "Semicolons",
+                instruction: "Use semicolons (;) to join two related independent clauses.",
+                sentence: "I like reading books <span class='underline'>my sister</span> prefers drawing.",
+                corrected: "I like reading books; my sister prefers drawing.",
+                explanation: "Use a semicolon to join two closely related independent clauses."
+            },
+            {
+                topic: "Comparative Adjectives",
+                instruction: "Use the comparative form (-er or more) when comparing two things.",
+                sentence: "This box is <span class='underline'>heavy</span> than that one.",
+                corrected: "This box is heavier than that one.",
+                explanation: "Use the comparative form 'heavier' when comparing two things."
+            },
+            {
+                topic: "Superlative Adjectives",
+                instruction: "Use the superlative form (-est or most) when comparing three or more things.",
+                sentence: "This is the <span class='underline'>interesting</span> book I have ever read.",
+                corrected: "This is the most interesting book I have ever read.",
+                explanation: "Use the superlative form 'most interesting' when comparing three or more things."
+            },
+            {
+                topic: "Prepositions",
+                instruction: "Use correct prepositions (at, in, on, to, for, with) to show relationships between words.",
+                sentence: "She is good <span class='underline'>in</span> mathematics.",
+                corrected: "She is good at mathematics.",
+                explanation: "Use the correct preposition 'at' with 'good' when referring to subjects."
+            },
+            {
+                topic: "Capitalization",
+                instruction: "Capitalize proper nouns (names of people, places, and specific things) and the pronoun 'I'.",
+                sentence: "<span class='underline'>i</span> visited <span class='underline'>sydney opera house</span> last <span class='underline'>january</span>.",
+                corrected: "I visited Sydney Opera House last January.",
+                explanation: "Capitalize the pronoun 'I', proper nouns like 'Sydney Opera House', and months like 'January'."
+            },
+            {
+                topic: "Homophones",
+                instruction: "Select the correct homophone: 'their' shows possession, 'there' indicates a place, and 'they're' means 'they are'.",
+                sentence: "<span class='underline'>Their</span> going to the beach with <span class='underline'>they're</span> friends.",
+                corrected: "They're going to the beach with their friends.",
+                explanation: "Use 'they're' for 'they are' and 'their' for possession."
+            },
+            {
+                topic: "Compound Sentences",
+                instruction: "Use coordinating conjunctions (for, and, nor, but, or, yet, so) with commas to join independent clauses.",
+                sentence: "I wanted to go to the park<span class='underline'>.</span> it was raining.",
+                corrected: "I wanted to go to the park, but it was raining.",
+                explanation: "Use a comma and a coordinating conjunction like 'but' to join two independent clauses."
+            },
+            {
+                topic: "Regular Plurals",
+                instruction: "Form regular plurals correctly by adding -s or -es.",
+                sentence: "I have two <span class='underline'>cat</span> and three <span class='underline'>dog</span>.",
+                corrected: "I have two cats and three dogs.",
+                explanation: "Add -s to form regular plurals for cat and dog."
+            },
+            {
+                topic: "Irregular Plurals",
+                instruction: "Remember irregular plural forms that don't follow the standard rules.",
+                sentence: "The <span class='underline'>childs</span> are playing with the <span class='underline'>mouses</span>.",
+                corrected: "The children are playing with the mice.",
+                explanation: "The irregular plurals are 'children' and 'mice'."
+            },
+            {
+                topic: "Subject-Verb Agreement",
+                instruction: "Make sure the verb matches the subject in number (singular or plural).",
+                sentence: "The team <span class='underline'>are</span> playing well.",
+                corrected: "The team is playing well.",
+                explanation: "Collective nouns like 'team' usually take singular verbs."
+            },
+            {
+                topic: "Speech Marks",
+                instruction: "Add commas and speech marks to show direct speech correctly.",
+                sentence: "Michael shouted We are here The captain replied I cant see you",
+                corrected: "Michael shouted, \"We are here!\" The captain replied, \"I can't see you!\".",
+                explanation: "Use commas and speech marks to indicate direct speech properly."
+            },
+            {
+                topic: "Articles",
+                instruction: "Use 'a' before words that start with a consonant sound and 'an' before words that start with a vowel sound.",
+                sentence: "She is <span class='underline'>a</span> honest person.",
+                corrected: "She is an honest person.",
+                explanation: "Use 'an' before words that start with a vowel sound, like 'honest'."
+            },
+            {
+                topic: "Regular Past Tense",
+                instruction: "Form regular past tense verbs by adding -ed.",
+                sentence: "Yesterday, I <span class='underline'>walk</span> to school.",
+                corrected: "Yesterday, I walked to school.",
+                explanation: "Add -ed to form the regular past tense of 'walk'."
+            },
+            {
+                topic: "Irregular Past Tense",
+                instruction: "Remember irregular past tense verbs that don't follow the standard -ed pattern.",
+                sentence: "She <span class='underline'>goed</span> to the store yesterday.",
+                corrected: "She went to the store yesterday.",
+                explanation: "The irregular past tense of 'go' is 'went'."
+            },
+            {
+                topic: "Conjunctions",
+                instruction: "Use a conjunction to show that one event is the result of another.",
+                sentence: "I was hungry<span class='underline'>.</span> I made a sandwich.",
+                corrected: "I was hungry, so I made a sandwich.",
+                explanation: "Use a conjunction to show that one event is the result of another."
+            },
+            {
+                topic: "Adjective Order",
+                instruction: "Arrange the adjectives in the correct order: opinion, size, age, shape, color, origin, material, purpose.",
+                sentence: "She bought a <span class='underline'>red beautiful</span> dress.",
+                corrected: "She bought a beautiful red dress.",
+                explanation: "Opinion adjectives like 'beautiful' come before color adjectives like 'red'."
+            },
+            {
+                topic: "Subordinating Conjunctions",
+                instruction: "Use a subordinating conjunction (although, because, since, when, while, after, before, if) to connect these ideas.",
+                sentence: "<span class='underline'>I finished my homework</span> I went outside to play.",
+                corrected: "After I finished my homework, I went outside to play.",
+                explanation: "Use a subordinating conjunction like 'after' to show the relationship between the two ideas."
+            }
+        ];
+
+        // DOM elements
+        const introScreen = document.getElementById('intro-screen');
+        const quizContainer = document.getElementById('quiz-container');
+        const resultsContainer = document.getElementById('results');
+        const startBtn = document.getElementById('start-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const sentenceEl = document.getElementById('sentence');
+        const answerEl = document.getElementById('answer');
+        const feedbackEl = document.getElementById('feedback');
+        const scoreEl = document.getElementById('score');
+        const currentQuestionEl = document.getElementById('current-question');
+        const finalScoreEl = document.getElementById('final-score');
+        const improvementAreasEl = document.getElementById('improvement-areas');
+        const suggestionTextEl = document.getElementById('suggestion-text');
+        const totalQuestionsEl = document.getElementById('total-questions');
+        const topicInstructionEl = document.getElementById('topic-instruction');
+        const encouragementEl = document.getElementById('encouragement');
+
+        // Quiz state
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = [];
+        const topicPerformance = {};
+        let hasAttempted = false;
+
+        // Initialize the quiz
+        function initQuiz() {
+            totalQuestionsEl.textContent = grammarQuestions.length;
+            document.getElementById('total-questions-result').textContent = grammarQuestions.length;
+            showQuestion();
+        }
+
+        // Display current question
+        function showQuestion() {
+            hasAttempted = false;
+            const question = grammarQuestions[currentQuestionIndex];
+            topicInstructionEl.textContent = question.instruction;
+            sentenceEl.innerHTML = question.sentence;
+            currentQuestionEl.textContent = currentQuestionIndex + 1;
+            answerEl.value = '';
+            feedbackEl.style.display = 'none';
+            submitBtn.style.display = 'block';
+            nextBtn.style.display = 'none';
+            answerEl.focus();
+        }
+
+        // Check the user's answer
+        function checkAnswer() {
+            const userAnswer = answerEl.value.trim();
+            const question = grammarQuestions[currentQuestionIndex];
+            const correctedAnswer = question.corrected.trim();
+            const normalizedCorrected = normalizeAnswer(correctedAnswer);
+            const normalizedUser = normalizeAnswer(userAnswer);
+
+            // First check for simple capitalization, punctuation, and minor spelling errors
+            if (!hasAttempted) {
+                let feedbackMessage = "";
+
+                // Check for capitalization at the start
+                if (userAnswer.length > 0 && userAnswer[0] !== correctedAnswer[0] && userAnswer[0] === correctedAnswer[0].toLowerCase()) {
+                    feedbackMessage += "Remember to use a capital letter at the beginning of the sentence. ";
+                }
+                
+                // Check for proper nouns like 'Sydney' or 'January' (a simplified check)
+                const properNouns = ["I", "Sydney", "January", "Michael", "Jane"];
+                let properNounHint = false;
+                properNouns.forEach(noun => {
+                    if (correctedAnswer.includes(noun) && userAnswer.toLowerCase().includes(noun.toLowerCase()) && !userAnswer.includes(noun)) {
+                        properNounHint = true;
+                    }
+                });
+                if (properNounHint) {
+                    feedbackMessage += "Remember to check the capitalization of all proper nouns. ";
+                }
+
+                // Check for punctuation at the end
+                const correctPunctuation = correctedAnswer.slice(-1);
+                const userPunctuation = userAnswer.slice(-1);
+                const hasCorrectPunctuation = correctPunctuation.match(/[.!?]/);
+                const hasUserPunctuation = userPunctuation.match(/[.!?]/);
+                
+                if (hasCorrectPunctuation && userPunctuation !== correctPunctuation) {
+                    feedbackMessage += `Remember to review your punctuation. `;
+                } else if (!hasCorrectPunctuation && hasUserPunctuation) {
+                    feedbackMessage += "Remember to review your punctuation. ";
+                }
+
+                // Check for misspellings using Levenshtein distance
+                const distance = levenshtein(normalizedUser, normalizedCorrected);
+                const maxLength = Math.max(normalizedUser.length, normalizedCorrected.length);
+                if (distance > 0 && distance / maxLength < 0.15) { 
+                    feedbackMessage += "You may have a spelling mistake. Check your words carefully.";
+                }
+
+                if (feedbackMessage.length > 0 && normalizedUser !== normalizedCorrected) {
+                    feedbackEl.className = 'feedback warning';
+                    feedbackEl.innerHTML = `<strong>Try again:</strong> ${feedbackMessage}`;
+                    feedbackEl.style.display = 'block';
+                    feedbackEl.scrollIntoView({behavior: 'smooth', block: 'center'});
+                    hasAttempted = true;
+                    return; // Give them a chance to correct it
+                }
+            }
+
+            // At this point, it's either the second attempt or the answer has correct capitalization/punctuation.
+            // Check for full correctness.
+            userAnswers.push({
+                question: question.sentence,
+                userAnswer: userAnswer,
+                correctAnswer: question.corrected,
+                topic: question.topic
+            });
+
+            if (!topicPerformance[question.topic]) {
+                topicPerformance[question.topic] = { correct: 0, total: 0 };
+            }
+            topicPerformance[question.topic].total++;
+
+            let isCorrect = (normalizedUser === normalizedCorrected);
+
+            if (isCorrect) {
+                score++;
+                scoreEl.textContent = score;
+                feedbackEl.className = 'feedback correct';
+                feedbackEl.innerHTML = `<strong>Correct!</strong> ${question.explanation}`;
+                feedbackEl.scrollIntoView({behavior: 'smooth', block: 'center'});
+                topicPerformance[question.topic].correct++;
+            } else {
+                feedbackEl.className = 'feedback incorrect';
+                feedbackEl.innerHTML = `<strong>Incorrect.</strong> ${question.explanation} <br><br><strong>The correct answer is:</strong> "${question.corrected}"`;
+                feedbackEl.scrollIntoView({behavior: 'smooth', block: 'center'});
+            }
+
+            feedbackEl.style.display = 'block';
+            submitBtn.style.display = 'none';
+            nextBtn.style.display = 'block';
+        }
+
+        // Show results
+        function showResults() {
+            quizContainer.style.display = 'none';
+            resultsContainer.style.display = 'block';
+            finalScoreEl.textContent = score;
+
+            let improvementHTML = '';
+            let weakTopics = [];
+
+            for (const topic in topicPerformance) {
+                const accuracy = (topicPerformance[topic].correct / topicPerformance[topic].total) * 100;
+
+                improvementHTML += `
+                    <div class="topic">
+                        <div class="topic-name">${topic}</div>
+                        <div class="topic-accuracy">${topicPerformance[topic].correct}/${topicPerformance[topic].total} correct</div>
+                    </div>
+                `;
+
+                if (accuracy < 70) {
+                    weakTopics.push(topic);
+                }
+            }
+
+            improvementAreasEl.innerHTML = improvementHTML;
+
+            let mistakesHTML = "<h3>Review Your Mistakes:</h3>";
+            userAnswers.forEach(ans => {
+                if (normalizeAnswer(ans.userAnswer) !== normalizeAnswer(ans.correctAnswer)) {
+                    mistakesHTML += `<div class='topic'>
+                        <div><strong>Question:</strong> ${ans.question}</div>
+                        <div><span style='color:#e74c3c;'>Your answer:</span> ${ans.userAnswer || "(blank)"}</div>
+                        <div><span style='color:#2ecc71;'>Correct answer:</span> ${ans.correctAnswer}</div>
+                    </div>`;
+                }
+            });
+            improvementAreasEl.innerHTML += mistakesHTML;
+
+            // Update encouragement message based on score
+            if (score >= 25) {
+                encouragementEl.innerHTML = `
+                    <h3>Outstanding work!</h3>
+                    <p>You've shown an excellent understanding of grammar concepts. Keep up the great work!</p>
+                `;
+            } else if (score >= 15) {
+                encouragementEl.innerHTML = `
+                    <h3>Great effort!</h3>
+                    <p>You're making good progress with grammar. With a bit more practice, you'll master these concepts in no time!</p>
+                `;
+            } else {
+                encouragementEl.innerHTML = `
+                    <h3>Keep trying!</h3>
+                    <p>Learning grammar takes practice. Don't be discouraged - every attempt helps you improve.</p>
+                    <p>Remember, even expert writers had to start somewhere. You've got this!</p>
+                `;
+            }
+
+            // Provide suggestion based on performance
+            if (weakTopics.length > 0) {
+                suggestionTextEl.innerHTML = `Based on your results, you should focus on practicing: <strong>${weakTopics.join(', ')}</strong>.`;
+            } else {
+                suggestionTextEl.textContent = "You've demonstrated strong understanding across all grammar topics!";
+            }
+        }
+
+        // Event listeners
+        startBtn.addEventListener('click', () => {
+            introScreen.style.display = 'none';
+            quizContainer.style.display = 'block';
+            initQuiz();
+        });
+
+        submitBtn.addEventListener('click', checkAnswer);
+
+        nextBtn.addEventListener('click', () => {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < grammarQuestions.length) {
+                showQuestion();
+            } else {
+                showResults();
+            }
+        });
+
+        restartBtn.addEventListener('click', () => {
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = [];
+            for (const topic in topicPerformance) {
+                delete topicPerformance[topic];
+            }
+
+            scoreEl.textContent = '0';
+            resultsContainer.style.display = 'none';
+            introScreen.style.display = 'block';
+        });
+
+        // Allow pressing Enter to submit answer
+        answerEl.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && submitBtn.style.display !== 'none') {
+                checkAnswer();
+            }
+        });
+    </script>
+</body>
+</html>
